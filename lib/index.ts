@@ -10,7 +10,7 @@ export interface CognitoM2MCacheConstructProps {
 
 export class CognitoM2MCacheConstruct extends Construct {
   public readonly api: api_gateway.RestApi;
-  public readonly tokenUrl: string;
+  public readonly cachedTokenUrl: string;
 
   constructor(
     scope: Construct,
@@ -27,6 +27,13 @@ export class CognitoM2MCacheConstruct extends Construct {
         cachingEnabled: true,
         cacheDataEncrypted: true,
         cacheTtl: props.cacheDuration,
+        methodOptions: {
+          "/token/POST": {
+            cachingEnabled: true,
+            cacheDataEncrypted: true,
+            cacheTtl: props.cacheDuration,
+          },
+        },
       },
       defaultCorsPreflightOptions: {
         allowOrigins: api_gateway.Cors.ALL_ORIGINS,
@@ -39,8 +46,21 @@ export class CognitoM2MCacheConstruct extends Construct {
     const tokenResource = this.api.root.addResource("token");
     tokenResource.addMethod(
       "POST",
-      new api_gateway.HttpIntegration(props.tokenUrl),
+      new api_gateway.HttpIntegration(props.tokenUrl, {
+        options: {
+          cacheKeyParameters: [
+            "method.request.header.Authorization",
+            "method.request.querystring.scope",
+          ],
+          requestParameters: {
+            "method.request.header.Authorization":
+              "method.request.header.Authorization",
+            "method.request.querystring.scope":
+              "method.request.querystring.scope",
+          },
+        },
+      }),
     );
-    this.tokenUrl = this.api.urlForPath(tokenResource.path);
+    this.cachedTokenUrl = this.api.urlForPath(tokenResource.path);
   }
 }
