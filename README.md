@@ -1,9 +1,7 @@
-# Welcome to your CDK TypeScript Construct Library project
+# cognito-m2m-cache-construct
 
-You should explore the contents of this project. It demonstrates a CDK Construct Library that includes a construct (`CognitoM2MCacheConstruct`)
-which contains an Amazon SQS queue that is subscribed to an Amazon SNS topic.
-
-The construct defines an interface (`CognitoM2MCacheConstructProps`) to configure the visibility timeout of the queue.
+This repository contains a simple TypeScript AWS CDK construct to create a blind API Gateway cache for a single URL.
+The use case is to cache Cognito M2M token requests from Lambda functions as a cost reduction measure.
 
 ## Useful commands
 
