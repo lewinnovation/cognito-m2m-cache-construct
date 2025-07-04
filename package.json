@@ -1,12 +1,16 @@
 {
   "name": "@lewinnovation/cognito-m2m-cache-construct",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lewinnovation/cognito-m2m-cache-construct.git"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
